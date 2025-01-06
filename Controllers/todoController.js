@@ -18,11 +18,11 @@ const addTodo = async (req, res) => {
   try {
     const newTodo = new Todo({
       title,
-    //   description: description.map(subTodo => ({
-    //     text: subTodo.text,
-    //     isCompleted: subTodo.isCompleted || false,
-    //   })),
-      description,
+      description: description.map(subTodo => ({
+        text: subTodo.text,
+        isCompleted: subTodo.isCompleted || false,
+      })),
+      // description,
       date,
       priority,
       status: status || 'done',
