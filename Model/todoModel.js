@@ -22,19 +22,29 @@ const todoSchema = new mongoose.Schema({
     ],
     priority: {
         type: String,
-        enum: ["high", "low", "medium"],
-        default: "low",
+        enum: ["High", "Low", "Moderate"],
+        default: "Low",
         required: true
     },
-    date: {
-        type: String,
-        required: true
-    },
+    
+    // status: {
+    //     type: String,
+    //     enum: ['todo', 'done', 'inProgress', 'backlog'],
+    //     default: 'done'
+    // }
     status: {
         type: String,
-        enum: ['todo', 'done', 'inProgress', 'backlog'],
-        default: 'done'
-    }
+        enum: ['Personal', 'Work', 'Family', 'General'],
+        default: 'General'
+    },
+    toStart: {
+        type: Date,
+        default: Date.now
+    },
+    toEnd: {
+        type: String,
+        required: true
+    },
 },{timestamps: true})
 
 module.exports = mongoose.model('Todo', todoSchema);

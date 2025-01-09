@@ -13,7 +13,7 @@ const getTodos = async (req, res) => {
 
 // Add a new Todo - Automatically assign author - **Change**
 const addTodo = async (req, res) => {
-  const { title, description, date, priority, status } = req.body;
+  const { title, description, toStart, toEnd, priority, status } = req.body;
 
   try {
     const newTodo = new Todo({
@@ -23,9 +23,10 @@ const addTodo = async (req, res) => {
         isCompleted: subTodo.isCompleted || false,
       })),
       // description,
-      date,
+      toStart,
+      toEnd,
       priority,
-      status: status || 'done',
+      status: status || 'General',
       author: req.user.id 
     });
     await newTodo.save();
@@ -39,7 +40,7 @@ const addTodo = async (req, res) => {
 // Update a Todo (Only if it belongs to the user) - **Change**
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, description, date, priority, status } = req.body;
+  const { title, description, toStart, toEnd, priority, status } = req.body;
 
   try {
     const todo = await Todo.findOne({ _id: id, author: req.user.id }); // **Ensure user owns the todo**
@@ -50,7 +51,8 @@ const updateTodo = async (req, res) => {
     // Update the todo
     todo.title = title || todo.title;
     todo.description = description || todo.description;
-    todo.date = date || todo.date;
+    todo.toStart = toStart || todo.toStart;
+    todo.toEnd = toEnd || todo.toEnd;
     todo.priority = priority || todo.priority;
     todo.status = status || todo.status;
 
@@ -76,4 +78,60 @@ const deleteTodo = async (req, res) => {
   }
 };
 
-module.exports = { getTodos, addTodo, updateTodo, deleteTodo };
+
+// to get total status counts
+const getStatusCounts = async(req, res) => {
+  try{
+    const todos = await Todo.find({author: req.user.id}); //fetching all todos of the user
+
+    // initialize the counts
+    const statusCounts = {
+      Personal: 0,
+      Work: 0,
+      Family: 0,
+      General: 0,
+    }
+
+    todos.forEach((todo)=>{
+      if(statusCounts[todo.status] !== undefined){
+        statusCounts[todo.status]++
+      }
+    })
+
+    res.status(200).json(statusCounts)
+
+  }catch(err){
+    console.error('something error in getting status count', err)
+    res.status(500).json({message: 'Error fetching status counts', error: err})
+  }
+}
+
+
+
+// now getting priority count
+const getPriorityCounts = async(req, res) => {
+  try{
+    const todos = await Todo.find({author: req.user.id})
+
+    const priorityCounts = {
+      High: 0,
+      Low: 0,
+      Moderate: 0,
+    }
+
+    todos.forEach((todo)=>{
+      if(priorityCounts[todo.priority] !== undefined){
+        priorityCounts[todo.priority]++
+      }
+    })
+    res.status(200).json(priorityCounts)
+
+  }catch(err){
+    console.error('error in priority count'. err)
+    res.status(500).json({message:'Error in priority count', error: err})
+  }
+}
+
+
+
+module.exports = { getTodos, addTodo, updateTodo, deleteTodo, getStatusCounts, getPriorityCounts };
