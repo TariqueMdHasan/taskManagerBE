@@ -26,7 +26,7 @@ const addTodo = async (req, res) => {
       toStart,
       toEnd,
       priority,
-      status: status || 'done',
+      status: status || 'todo',
       author: req.user.id 
     });
     await newTodo.save();

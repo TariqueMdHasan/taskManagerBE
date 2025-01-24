@@ -30,7 +30,7 @@ const todoSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['todo', 'done', 'inProgress', 'backlog'],
-        default: 'done'
+        default: 'todo'
     },
     // status: {
     //     type: String,
