@@ -27,16 +27,16 @@ const todoSchema = new mongoose.Schema({
         required: true
     },
     
-    // status: {
-    //     type: String,
-    //     enum: ['todo', 'done', 'inProgress', 'backlog'],
-    //     default: 'done'
-    // }
     status: {
         type: String,
-        enum: ['Personal', 'Work', 'Family', 'General'],
-        default: 'General'
+        enum: ['todo', 'done', 'inProgress', 'backlog'],
+        default: 'done'
     },
+    // status: {
+    //     type: String,
+    //     enum: ['Personal', 'Work', 'Family', 'General'],
+    //     default: 'General'
+    // },
     toStart: {
         type: Date,
         default: Date.now
