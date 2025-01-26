@@ -86,10 +86,10 @@ const getStatusCounts = async(req, res) => {
 
     // initialize the counts
     const statusCounts = {
-      Personal: 0,
-      Work: 0,
-      Family: 0,
-      General: 0,
+      todo: 0,
+      done: 0,
+      inProgress: 0,
+      backlog: 0,
     }
 
     todos.forEach((todo)=>{
